@@ -1,2 +1,4 @@
-<h1>DrinkCategories#index</h1>
-<p>Find me in app/views/drink_categories/index.html.erb</p>
+<h1>Drink Category</h1>
+<%= @drink_categories.each do |c| %>
+	<li><%=c.name%></li>
+<% end %>

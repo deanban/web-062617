@@ -6,8 +6,9 @@
   </tr>
 <% @drinks.each do |drink| %>
   <tr>
-    <td><%= link_to drink.name, drink_path(drink) %></td>
-  <td><%= link_to "$#{drink.price}", drink_path(drink) %></td>
+    <td><%= link_to drink.name, edit_drink_path(drink) %></td>
+  <td><%= link_to "$#{drink.price}", edit_drink_path(drink) %>
+<!--   	 <td> <%= link_to("#{drink.drink_category_id}", drink_path(drink)) %></td> -->
 </tr>
   <% end %>
 </table>

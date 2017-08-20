@@ -1,6 +1,6 @@
 class DrinksController < ApplicationController
 
-  before_action :find_drinks, only: [:show]
+  before_action :find_drinks, only: [:show, :edit, :update]
 
   def index
   	@drinks = Drink.all
@@ -22,6 +22,19 @@ class DrinksController < ApplicationController
   		render :new
   	end
 
+  end
+
+  def edit
+  end
+
+  def update
+    @drink.update(drink_params)
+    
+    if @drink.save
+      redirect_to drinks_path
+    else 
+      render :edit
+    end
   end
 
   private

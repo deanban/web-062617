@@ -1,0 +1,16 @@
+<%= form_for @drink do |form| %>
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name%>
+  </div>
+
+  <div class="field">
+    <%= form.label :price %>
+    <%= form.number_field :price%>
+
+    <%= form.label :drink_category_id %>
+    <%= form.collection_select(:drink_category_id, DrinkCategory.all, :id, :name) %>
+
+    <%= form.submit %>
+  </div>
+<% end %>
