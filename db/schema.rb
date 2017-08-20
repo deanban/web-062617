@@ -10,13 +10,44 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170724151614) do
+ActiveRecord::Schema.define(version: 20170820194834) do
+
+  create_table "bar_bartenders", force: :cascade do |t|
+    t.integer "bar_id"
+    t.integer "bartender_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bar_id"], name: "index_bar_bartenders_on_bar_id"
+    t.index ["bartender_id"], name: "index_bar_bartenders_on_bartender_id"
+  end
+
+  create_table "bars", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "bartenders", force: :cascade do |t|
+    t.string "name"
+    t.integer "drink_category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["drink_category_id"], name: "index_bartenders_on_drink_category_id"
+  end
+
+  create_table "drink_categories", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "drinks", force: :cascade do |t|
     t.string "name"
     t.integer "price"
+    t.integer "drink_category_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["drink_category_id"], name: "index_drinks_on_drink_category_id"
   end
 
 end

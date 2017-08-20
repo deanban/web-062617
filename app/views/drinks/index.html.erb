@@ -1,0 +1,16 @@
+<h1>Welcome to Nifty Bartender!</h1<p>We got all kinds! Check em out below!</p<div class="container">
+<table class="table">
+  <tr>
+    <th>Drink Name</th>
+    <th>Price</th>
+  </tr>
+<% @drinks.each do |drink| %>
+  <tr>
+    <td><%= link_to drink.name, drink_path(drink) %></td>
+  <td><%= link_to "$#{drink.price}", drink_path(drink) %></td>
+</tr>
+  <% end %>
+</table>
+<%= button_to "Add a drink!", new_drink_path, method: "get" %>
+</div>
+</div>

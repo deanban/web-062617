@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bar_id: 1
+  bartender_id: 1
+  bar: one
+  bartender: one
+
+two:
+  bar_id: 1
+  bartender_id: 1
+  bar: two
+  bartender: two

@@ -3,7 +3,11 @@
 one:
   name: MyString
   price: 1
+  drink_category_id: 1
+  drink_category: one
 
 two:
   name: MyString
   price: 1
+  drink_category_id: 1
+  drink_category: two

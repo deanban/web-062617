@@ -1,235 +1,795 @@
   [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
-  [1m[35m (1.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
-  [1m[35m (1.4ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
   [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
-Migrating to CreateDrinks (20170724151614)
+Migrating to CreateDrinkCategories (20170820193824)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "drink_categories" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170820193824"]]
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateDrinks (20170820194043)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "drinks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "price" integer, "drink_category_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, CONSTRAINT "fk_rails_eb1cb5482e"
+FOREIGN KEY ("drink_category_id")
+  REFERENCES "drink_categories" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_drinks_on_drink_category_id" ON "drinks" ("drink_category_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170820194043"]]
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateBars (20170820194406)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "bars" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170820194406"]]
+  [1m[35m (0.5ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateBarBartenders (20170820194715)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "bar_bartenders" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "bar_id" integer, "bartender_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, CONSTRAINT "fk_rails_1db7e84762"
+FOREIGN KEY ("bar_id")
+  REFERENCES "bars" ("id")
+, CONSTRAINT "fk_rails_7db4f3cf23"
+FOREIGN KEY ("bartender_id")
+  REFERENCES "bartenders" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_bar_bartenders_on_bar_id" ON "bar_bartenders" ("bar_id")[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_bar_bartenders_on_bar_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_bar_bartenders_on_bar_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_bar_bartenders_on_bartender_id" ON "bar_bartenders" ("bartender_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170820194715"]]
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateBartenders (20170820194834)
   [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
-  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "drinks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "price" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
-  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170724151614"]]
-  [1m[35m (0.8ms)[0m  [1m[36mcommit transaction[0m
-  [1m[36mActiveRecord::InternalMetadata Load (0.2ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
-  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
-  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2017-07-24 15:17:21.924071"], ["updated_at", "2017-07-24 15:17:21.924071"]]
-  [1m[35m (0.7ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.4ms)[0m  [1m[35mCREATE TABLE "bartenders" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "drink_category_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, CONSTRAINT "fk_rails_4713fc8012"
+FOREIGN KEY ("drink_category_id")
+  REFERENCES "drink_categories" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_bartenders_on_drink_category_id" ON "bartenders" ("drink_category_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170820194834"]]
+  [1m[35m (0.5ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2017-08-20 19:56:03.601390"], ["updated_at", "2017-08-20 19:56:03.601390"]]
+  [1m[35m (0.4ms)[0m  [1m[36mcommit transaction[0m
   [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
-Started GET "/drinks/new" for 127.0.0.1 at 2017-07-24 11:32:37 -0400
-  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
-Processing by DrinksController#new as HTML
-  Rendering drinks/new.html.erb within layouts/application
-  Rendered drinks/new.html.erb within layouts/application (2.0ms)
-Completed 200 OK in 241ms (Views: 232.5ms | ActiveRecord: 0.0ms)
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_bar_bartenders_on_bartender_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_bar_bartenders_on_bartender_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_bar_bartenders_on_bar_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_bar_bartenders_on_bar_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_bartenders_on_drink_category_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_bartenders_on_drink_category_id' AND type='index'
+[0m
+  [1m[35m (0.2ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_drinks_on_drink_category_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_drinks_on_drink_category_id' AND type='index'
+[0m
+Started GET "/" for 127.0.0.1 at 2017-08-20 15:57:30 -0400
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/dean/.rvm/gems/ruby-2.3.1/gems/railties-5.1.3/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/dean/.rvm/gems/ruby-2.3.1/gems/railties-5.1.3/lib/rails/templates/rails/welcome/index.html.erb (3.9ms)
+Completed 200 OK in 16ms (Views: 7.4ms | ActiveRecord: 0.0ms)
 
 
-Started GET "/drinks/new" for 127.0.0.1 at 2017-07-24 11:36:19 -0400
-Processing by DrinksController#new as HTML
-  Rendering drinks/new.html.erb within layouts/application
-  Rendered drinks/new.html.erb within layouts/application (0.8ms)
-Completed 200 OK in 15ms (Views: 13.1ms)
-
-
-Started POST "/drinks" for 127.0.0.1 at 2017-07-24 11:36:36 -0400
-Processing by DrinksController#create as HTML
-  Parameters: {"utf8"=>"✓", "authenticity_token"=>"vNsQ7lVqFxUQKc5SiGsxtxMYcasXIZZVh8a/1PDZSQSnZ+Cn4iuLmnN6lx4gYgYBh6AXqYIsK1/bl8OKuB6oJQ==", "name"=>"Long Island Iced Tea", "commit"=>"Create Drink"}
-Completed 500 Internal Server Error in 354399ms
-
-
+Started GET "/bars" for 127.0.0.1 at 2017-08-20 15:57:38 -0400
   
-SystemExit (exit):
+ActionController::RoutingError (No route matches [GET] "/bars"):
   
-(byebug):1:in `exit'
-(byebug):1:in `create'
-app/controllers/drinks_controller.rb:17:in `create'
-Started GET "/drinks/new" for 127.0.0.1 at 2017-07-24 11:42:37 -0400
-  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
-Processing by DrinksController#new as HTML
-  Rendering drinks/new.html.erb within layouts/application
-  Rendered drinks/new.html.erb within layouts/application (16.1ms)
-Completed 500 Internal Server Error in 40ms (ActiveRecord: 0.6ms)
-
-
+actionpack (5.1.3) lib/action_dispatch/middleware/debug_exceptions.rb:63:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.3) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.3) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.3) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.3) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.3) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 15:58:48 -0400
   
-ActionView::Template::Error (undefined method `beef' for #<Drink:0x007fd94b0bd1b0>):
-    1: <%= form_for @drink do |f| %>
-    2: <%= f.text_field :name %>
-    3: <%= f.text_field :price %>
-    4: <%= f.text_field :beef %>
-    5: <%= f.submit %>
-    6: <% end %>
+ActionController::RoutingError (uninitialized constant DrinksController):
   
-app/views/drinks/new.html.erb:4:in `block in _app_views_drinks_new_html_erb___3404121426703761562_70285597080680'
-app/views/drinks/new.html.erb:1:in `_app_views_drinks_new_html_erb___3404121426703761562_70285597080680'
-Started GET "/drinks/new" for 127.0.0.1 at 2017-07-24 11:42:51 -0400
-Processing by DrinksController#new as HTML
-  Rendering drinks/new.html.erb within layouts/application
-  Rendered drinks/new.html.erb within layouts/application (8.2ms)
-Completed 200 OK in 182ms (Views: 180.1ms | ActiveRecord: 0.0ms)
-
-
-Started GET "/drinks/new" for 127.0.0.1 at 2017-07-24 11:43:09 -0400
-Processing by DrinksController#new as HTML
-  Rendering drinks/new.html.erb within layouts/application
-  Rendered drinks/new.html.erb within layouts/application (6.0ms)
-Completed 200 OK in 21ms (Views: 18.5ms | ActiveRecord: 0.0ms)
-
-
-Started GET "/drinks/new" for 127.0.0.1 at 2017-07-24 11:44:17 -0400
-Processing by DrinksController#new as HTML
-  Rendering drinks/new.html.erb within layouts/application
-  Rendered drinks/new.html.erb within layouts/application (2.2ms)
-Completed 500 Internal Server Error in 9ms
-
-
-  
-ActionView::Template::Error (First argument in form cannot contain nil or be empty):
-    1: <%= form_for @drink do |f| %>
-    2: <%= f.label :name %>
-    3: <%= f.text_field :name %>
-    4: <%= f.label :price %>
-  
-app/views/drinks/new.html.erb:1:in `_app_views_drinks_new_html_erb___3404121426703761562_70285596221960'
-  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
-  [1m[35mSQL (1.1ms)[0m  [1m[32mINSERT INTO "drinks" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Long Island"], ["price", 18], ["created_at", "2017-07-24 15:45:26.708304"], ["updated_at", "2017-07-24 15:45:26.708304"]]
-  [1m[35m (1.5ms)[0m  [1m[36mcommit transaction[0m
-Started GET "/drinks/1/edit" for 127.0.0.1 at 2017-07-24 11:45:45 -0400
-  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
-Processing by DrinksController#edit as HTML
-  Parameters: {"id"=>"1"}
-  [1m[36mDrink Load (0.2ms)[0m  [1m[34mSELECT  "drinks".* FROM "drinks" WHERE "drinks"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
-  Rendering drinks/edit.html.erb within layouts/application
-  Rendered drinks/edit.html.erb within layouts/application (12.6ms)
-Completed 200 OK in 205ms (Views: 182.7ms | ActiveRecord: 0.9ms)
-
-
-Started GET "/drinks/new" for 127.0.0.1 at 2017-07-24 11:51:44 -0400
-Processing by DrinksController#new as HTML
-  Rendering drinks/new.html.erb within layouts/application
-  Rendered drinks/new.html.erb within layouts/application (2.0ms)
-Completed 200 OK in 24ms (Views: 14.4ms | ActiveRecord: 0.9ms)
-
-
-Started POST "/drinks" for 127.0.0.1 at 2017-07-24 11:52:15 -0400
-Processing by DrinksController#create as HTML
-  Parameters: {"utf8"=>"✓", "authenticity_token"=>"qMEFuiuoLXAn1Ov1RqXtirmKrr9Kmx5HTAWeRZouOfezffXznOmx/0SHsrnurNo8LTLIvd+Wo00QVOIb0unY1g==", "drink"=>{"name"=>"Rum and Coke", "price"=>"13"}, "commit"=>"Create Drink"}
-  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
-  [1m[35mSQL (0.4ms)[0m  [1m[32mINSERT INTO "drinks" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Rum and Coke"], ["price", 13], ["created_at", "2017-07-24 15:53:01.412867"], ["updated_at", "2017-07-24 15:53:01.412867"]]
-  [1m[35m (1.4ms)[0m  [1m[36mcommit transaction[0m
-  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
-  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "drinks" ("name", "price", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["name", "Rum and Coke"], ["price", 13], ["created_at", "2017-07-24 15:57:03.927227"], ["updated_at", "2017-07-24 15:57:03.927227"]]
-  [1m[35m (1.5ms)[0m  [1m[36mcommit transaction[0m
-Completed 500 Internal Server Error in 881689ms (ActiveRecord: 3.8ms)
-
-
-  
-SystemExit (exit):
-  
-(byebug):1:in `exit'
-(byebug):1:in `create'
-app/controllers/drinks_controller.rb:22:in `create'
-Started GET "/drinks/1" for 127.0.0.1 at 2017-07-24 12:07:04 -0400
-Processing by DrinksController#show as HTML
-  Parameters: {"id"=>"1"}
-  [1m[36mDrink Load (1.6ms)[0m  [1m[34mSELECT  "drinks".* FROM "drinks" WHERE "drinks"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
-Completed 406 Not Acceptable in 174ms (ActiveRecord: 8.8ms)
-
-
-  
-ActionController::UnknownFormat (DrinksController#show is missing a template for this request format and variant.
-
-request.formats: ["text/html"]
-request.variant: []
-
-NOTE! For XHR/Ajax or API requests, this action would normally respond with 204 No Content: an empty white screen. Since you're loading it in a web browser, we assume that you expected to actually render a template, not nothing, so we're showing an error to be extra-clear. If you expect 204 No Content, carry on. That's what you'll get from an XHR or API request. Give it a shot.):
-  
-actionpack (5.1.2) lib/action_controller/metal/implicit_render.rb:53:in `default_render'
-actionpack (5.1.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `block in send_action'
-actionpack (5.1.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `tap'
-actionpack (5.1.2) lib/action_controller/metal/basic_implicit_render.rb:4:in `send_action'
-actionpack (5.1.2) lib/abstract_controller/base.rb:186:in `process_action'
-actionpack (5.1.2) lib/action_controller/metal/rendering.rb:30:in `process_action'
-actionpack (5.1.2) lib/abstract_controller/callbacks.rb:20:in `block in process_action'
-activesupport (5.1.2) lib/active_support/callbacks.rb:131:in `run_callbacks'
-actionpack (5.1.2) lib/abstract_controller/callbacks.rb:19:in `process_action'
-actionpack (5.1.2) lib/action_controller/metal/rescue.rb:20:in `process_action'
-actionpack (5.1.2) lib/action_controller/metal/instrumentation.rb:32:in `block in process_action'
-activesupport (5.1.2) lib/active_support/notifications.rb:166:in `block in instrument'
-activesupport (5.1.2) lib/active_support/notifications/instrumenter.rb:21:in `instrument'
-activesupport (5.1.2) lib/active_support/notifications.rb:166:in `instrument'
-actionpack (5.1.2) lib/action_controller/metal/instrumentation.rb:30:in `process_action'
-actionpack (5.1.2) lib/action_controller/metal/params_wrapper.rb:252:in `process_action'
-activerecord (5.1.2) lib/active_record/railties/controller_runtime.rb:22:in `process_action'
-actionpack (5.1.2) lib/abstract_controller/base.rb:124:in `process'
-actionview (5.1.2) lib/action_view/rendering.rb:30:in `process'
-actionpack (5.1.2) lib/action_controller/metal.rb:189:in `dispatch'
-actionpack (5.1.2) lib/action_controller/metal.rb:253:in `dispatch'
-actionpack (5.1.2) lib/action_dispatch/routing/route_set.rb:49:in `dispatch'
-actionpack (5.1.2) lib/action_dispatch/routing/route_set.rb:31:in `serve'
-actionpack (5.1.2) lib/action_dispatch/journey/router.rb:46:in `block in serve'
-actionpack (5.1.2) lib/action_dispatch/journey/router.rb:33:in `each'
-actionpack (5.1.2) lib/action_dispatch/journey/router.rb:33:in `serve'
-actionpack (5.1.2) lib/action_dispatch/routing/route_set.rb:832:in `call'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:269:in `const_get'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:269:in `block in constantize'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:267:in `each'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:267:in `inject'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:267:in `constantize'
+actionpack (5.1.3) lib/action_dispatch/http/request.rb:82:in `controller_class'
+actionpack (5.1.3) lib/action_dispatch/routing/route_set.rb:43:in `controller'
+actionpack (5.1.3) lib/action_dispatch/routing/route_set.rb:29:in `serve'
+actionpack (5.1.3) lib/action_dispatch/journey/router.rb:46:in `block in serve'
+actionpack (5.1.3) lib/action_dispatch/journey/router.rb:33:in `each'
+actionpack (5.1.3) lib/action_dispatch/journey/router.rb:33:in `serve'
+actionpack (5.1.3) lib/action_dispatch/routing/route_set.rb:834:in `call'
 rack (2.0.3) lib/rack/etag.rb:25:in `call'
 rack (2.0.3) lib/rack/conditional_get.rb:25:in `call'
 rack (2.0.3) lib/rack/head.rb:12:in `call'
 rack (2.0.3) lib/rack/session/abstract/id.rb:232:in `context'
 rack (2.0.3) lib/rack/session/abstract/id.rb:226:in `call'
-actionpack (5.1.2) lib/action_dispatch/middleware/cookies.rb:613:in `call'
-activerecord (5.1.2) lib/active_record/migration.rb:556:in `call'
-actionpack (5.1.2) lib/action_dispatch/middleware/callbacks.rb:26:in `block in call'
-activesupport (5.1.2) lib/active_support/callbacks.rb:97:in `run_callbacks'
-actionpack (5.1.2) lib/action_dispatch/middleware/callbacks.rb:24:in `call'
-actionpack (5.1.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
-actionpack (5.1.2) lib/action_dispatch/middleware/debug_exceptions.rb:59:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/cookies.rb:613:in `call'
+activerecord (5.1.3) lib/active_record/migration.rb:556:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/callbacks.rb:26:in `block in call'
+activesupport (5.1.3) lib/active_support/callbacks.rb:97:in `run_callbacks'
+actionpack (5.1.3) lib/action_dispatch/middleware/callbacks.rb:24:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/debug_exceptions.rb:59:in `call'
 web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
 web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
 web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
 web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
-actionpack (5.1.2) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
-railties (5.1.2) lib/rails/rack/logger.rb:36:in `call_app'
-railties (5.1.2) lib/rails/rack/logger.rb:24:in `block in call'
-activesupport (5.1.2) lib/active_support/tagged_logging.rb:69:in `block in tagged'
-activesupport (5.1.2) lib/active_support/tagged_logging.rb:26:in `tagged'
-activesupport (5.1.2) lib/active_support/tagged_logging.rb:69:in `tagged'
-railties (5.1.2) lib/rails/rack/logger.rb:24:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.3) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.3) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.3) lib/rails/rack/logger.rb:24:in `call'
 sprockets-rails (3.2.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
-actionpack (5.1.2) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
-actionpack (5.1.2) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/request_id.rb:25:in `call'
 rack (2.0.3) lib/rack/method_override.rb:22:in `call'
 rack (2.0.3) lib/rack/runtime.rb:22:in `call'
-activesupport (5.1.2) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
-actionpack (5.1.2) lib/action_dispatch/middleware/executor.rb:12:in `call'
-actionpack (5.1.2) lib/action_dispatch/middleware/static.rb:125:in `call'
+activesupport (5.1.3) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/static.rb:125:in `call'
 rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
-railties (5.1.2) lib/rails/engine.rb:522:in `call'
-puma (3.9.1) lib/puma/configuration.rb:224:in `call'
-puma (3.9.1) lib/puma/server.rb:602:in `handle_request'
-puma (3.9.1) lib/puma/server.rb:435:in `process_client'
-puma (3.9.1) lib/puma/server.rb:299:in `block in run'
-puma (3.9.1) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
-Started GET "/drinks/1/edit" for 127.0.0.1 at 2017-07-24 12:07:10 -0400
-Processing by DrinksController#edit as HTML
-  Parameters: {"id"=>"1"}
-  [1m[36mDrink Load (1.4ms)[0m  [1m[34mSELECT  "drinks".* FROM "drinks" WHERE "drinks"."id" = ? LIMIT ?[0m  [["id", 1], ["LIMIT", 1]]
-  Rendering drinks/edit.html.erb within layouts/application
-  Rendered drinks/edit.html.erb within layouts/application (32.9ms)
-Completed 200 OK in 264ms (Views: 236.6ms | ActiveRecord: 1.4ms)
-
-
-Started GET "/drinks/100/edit" for 127.0.0.1 at 2017-07-24 12:07:22 -0400
-Processing by DrinksController#edit as HTML
-  Parameters: {"id"=>"100"}
-  [1m[36mDrink Load (1.2ms)[0m  [1m[34mSELECT  "drinks".* FROM "drinks" WHERE "drinks"."id" = ? LIMIT ?[0m  [["id", 100], ["LIMIT", 1]]
-Completed 404 Not Found in 15ms (ActiveRecord: 1.2ms)
-
-
+railties (5.1.3) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 16:00:40 -0400
   
-ActiveRecord::RecordNotFound (Couldn't find Drink with 'id'=100):
+ActionController::RoutingError (uninitialized constant DrinksController):
   
-app/controllers/drinks_controller.rb:16:in `edit'
-Started GET "/drinks/new" for 127.0.0.1 at 2017-07-24 14:23:29 -0400
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:269:in `const_get'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:269:in `block in constantize'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:267:in `each'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:267:in `inject'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:267:in `constantize'
+actionpack (5.1.3) lib/action_dispatch/http/request.rb:82:in `controller_class'
+actionpack (5.1.3) lib/action_dispatch/routing/route_set.rb:43:in `controller'
+actionpack (5.1.3) lib/action_dispatch/routing/route_set.rb:29:in `serve'
+actionpack (5.1.3) lib/action_dispatch/journey/router.rb:46:in `block in serve'
+actionpack (5.1.3) lib/action_dispatch/journey/router.rb:33:in `each'
+actionpack (5.1.3) lib/action_dispatch/journey/router.rb:33:in `serve'
+actionpack (5.1.3) lib/action_dispatch/routing/route_set.rb:834:in `call'
+rack (2.0.3) lib/rack/etag.rb:25:in `call'
+rack (2.0.3) lib/rack/conditional_get.rb:25:in `call'
+rack (2.0.3) lib/rack/head.rb:12:in `call'
+rack (2.0.3) lib/rack/session/abstract/id.rb:232:in `context'
+rack (2.0.3) lib/rack/session/abstract/id.rb:226:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/cookies.rb:613:in `call'
+activerecord (5.1.3) lib/active_record/migration.rb:556:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/callbacks.rb:26:in `block in call'
+activesupport (5.1.3) lib/active_support/callbacks.rb:97:in `run_callbacks'
+actionpack (5.1.3) lib/action_dispatch/middleware/callbacks.rb:24:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/debug_exceptions.rb:59:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.3) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.3) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.3) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.3) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.3) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/" for 127.0.0.1 at 2017-08-20 16:00:51 -0400
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/dean/.rvm/gems/ruby-2.3.1/gems/railties-5.1.3/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/dean/.rvm/gems/ruby-2.3.1/gems/railties-5.1.3/lib/rails/templates/rails/welcome/index.html.erb (3.4ms)
+Completed 200 OK in 7ms (Views: 5.2ms)
+
+
+Started GET "/bars" for 127.0.0.1 at 2017-08-20 16:00:55 -0400
+  
+ActionController::RoutingError (uninitialized constant BarsController):
+  
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:269:in `const_get'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:269:in `block in constantize'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:267:in `each'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:267:in `inject'
+activesupport (5.1.3) lib/active_support/inflector/methods.rb:267:in `constantize'
+actionpack (5.1.3) lib/action_dispatch/http/request.rb:82:in `controller_class'
+actionpack (5.1.3) lib/action_dispatch/routing/route_set.rb:43:in `controller'
+actionpack (5.1.3) lib/action_dispatch/routing/route_set.rb:29:in `serve'
+actionpack (5.1.3) lib/action_dispatch/journey/router.rb:46:in `block in serve'
+actionpack (5.1.3) lib/action_dispatch/journey/router.rb:33:in `each'
+actionpack (5.1.3) lib/action_dispatch/journey/router.rb:33:in `serve'
+actionpack (5.1.3) lib/action_dispatch/routing/route_set.rb:834:in `call'
+rack (2.0.3) lib/rack/etag.rb:25:in `call'
+rack (2.0.3) lib/rack/conditional_get.rb:25:in `call'
+rack (2.0.3) lib/rack/head.rb:12:in `call'
+rack (2.0.3) lib/rack/session/abstract/id.rb:232:in `context'
+rack (2.0.3) lib/rack/session/abstract/id.rb:226:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/cookies.rb:613:in `call'
+activerecord (5.1.3) lib/active_record/migration.rb:556:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/callbacks.rb:26:in `block in call'
+activesupport (5.1.3) lib/active_support/callbacks.rb:97:in `run_callbacks'
+actionpack (5.1.3) lib/action_dispatch/middleware/callbacks.rb:24:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/debug_exceptions.rb:59:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.3) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.3) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.3) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.3) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.3) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/bars" for 127.0.0.1 at 2017-08-20 16:10:57 -0400
+Processing by BarsController#index as HTML
+  Rendering bars/index.html.erb within layouts/application
+  Rendered bars/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 340ms (Views: 338.2ms)
+
+
+Started GET "/bartenders" for 127.0.0.1 at 2017-08-20 16:11:06 -0400
+Processing by BartendersController#index as HTML
+  Rendering bartenders/index.html.erb within layouts/application
+  Rendered bartenders/index.html.erb within layouts/application (0.4ms)
+Completed 200 OK in 39ms (Views: 36.6ms)
+
+
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 16:11:14 -0400
+Processing by DrinksController#index as HTML
+  Rendering drinks/index.html.erb within layouts/application
+  Rendered drinks/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 34ms (Views: 31.6ms)
+
+
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "ar_internal_metadata"."value" FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ?[0m  [["key", "environment"]]
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT sqlite_version(*)[0m
+  [1m[35m (2.8ms)[0m  [1m[35mCREATE TABLE "schema_migrations" ("version" varchar NOT NULL PRIMARY KEY)[0m
+  [1m[35m (0.7ms)[0m  [1m[35mCREATE TABLE "ar_internal_metadata" ("key" varchar NOT NULL PRIMARY KEY, "value" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Migrating to CreateDrinkCategories (20170820193824)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.5ms)[0m  [1m[35mCREATE TABLE "drink_categories" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170820193824"]]
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateDrinks (20170820194043)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "drinks" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "price" integer, "drink_category_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, CONSTRAINT "fk_rails_eb1cb5482e"
+FOREIGN KEY ("drink_category_id")
+  REFERENCES "drink_categories" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_drinks_on_drink_category_id" ON "drinks" ("drink_category_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170820194043"]]
+  [1m[35m (0.5ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateBars (20170820194406)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "bars" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL)[0m
+  [1m[35mSQL (0.3ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170820194406"]]
+  [1m[35m (0.5ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateBarBartenders (20170820194715)
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.3ms)[0m  [1m[35mCREATE TABLE "bar_bartenders" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "bar_id" integer, "bartender_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, CONSTRAINT "fk_rails_1db7e84762"
+FOREIGN KEY ("bar_id")
+  REFERENCES "bars" ("id")
+, CONSTRAINT "fk_rails_7db4f3cf23"
+FOREIGN KEY ("bartender_id")
+  REFERENCES "bartenders" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_bar_bartenders_on_bar_id" ON "bar_bartenders" ("bar_id")[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_bar_bartenders_on_bar_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_bar_bartenders_on_bar_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_bar_bartenders_on_bartender_id" ON "bar_bartenders" ("bartender_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170820194715"]]
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+Migrating to CreateBartenders (20170820194834)
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.2ms)[0m  [1m[35mCREATE TABLE "bartenders" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar, "drink_category_id" integer, "created_at" datetime NOT NULL, "updated_at" datetime NOT NULL, CONSTRAINT "fk_rails_4713fc8012"
+FOREIGN KEY ("drink_category_id")
+  REFERENCES "drink_categories" ("id")
+)[0m
+  [1m[35m (0.1ms)[0m  [1m[35mCREATE  INDEX "index_bartenders_on_drink_category_id" ON "bartenders" ("drink_category_id")[0m
+  [1m[35mSQL (0.1ms)[0m  [1m[32mINSERT INTO "schema_migrations" ("version") VALUES (?)[0m  [["version", "20170820194834"]]
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[36mActiveRecord::InternalMetadata Load (0.1ms)[0m  [1m[34mSELECT  "ar_internal_metadata".* FROM "ar_internal_metadata" WHERE "ar_internal_metadata"."key" = ? LIMIT ?[0m  [["key", "environment"], ["LIMIT", 1]]
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35mSQL (0.2ms)[0m  [1m[32mINSERT INTO "ar_internal_metadata" ("key", "value", "created_at", "updated_at") VALUES (?, ?, ?, ?)[0m  [["key", "environment"], ["value", "development"], ["created_at", "2017-08-20 20:12:19.479237"], ["updated_at", "2017-08-20 20:12:19.479237"]]
+  [1m[35m (0.6ms)[0m  [1m[36mcommit transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_bar_bartenders_on_bartender_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_bar_bartenders_on_bartender_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_bar_bartenders_on_bar_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_bar_bartenders_on_bar_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_bartenders_on_drink_category_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_bartenders_on_drink_category_id' AND type='index'
+[0m
+  [1m[35m (0.1ms)[0m  [1m[34m            SELECT sql
+            FROM sqlite_master
+            WHERE name='index_drinks_on_drink_category_id' AND type='index'
+            UNION ALL
+            SELECT sql
+            FROM sqlite_temp_master
+            WHERE name='index_drinks_on_drink_category_id' AND type='index'
+[0m
+Started GET "/" for 127.0.0.1 at 2017-08-20 16:31:36 -0400
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by Rails::WelcomeController#index as HTML
+  Rendering /Users/dean/.rvm/gems/ruby-2.3.1/gems/railties-5.1.3/lib/rails/templates/rails/welcome/index.html.erb
+  Rendered /Users/dean/.rvm/gems/ruby-2.3.1/gems/railties-5.1.3/lib/rails/templates/rails/welcome/index.html.erb (3.8ms)
+Completed 200 OK in 17ms (Views: 8.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/bars" for 127.0.0.1 at 2017-08-20 16:31:40 -0400
+Processing by BarsController#index as HTML
+  Rendering bars/index.html.erb within layouts/application
+  Rendered bars/index.html.erb within layouts/application (0.5ms)
+Completed 200 OK in 179ms (Views: 177.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/bars/new" for 127.0.0.1 at 2017-08-20 16:31:48 -0400
+  
+AbstractController::ActionNotFound (The action 'new' could not be found for BarsController):
+  
+actionpack (5.1.3) lib/abstract_controller/base.rb:119:in `process'
+actionview (5.1.3) lib/action_view/rendering.rb:30:in `process'
+actionpack (5.1.3) lib/action_controller/metal.rb:189:in `dispatch'
+actionpack (5.1.3) lib/action_controller/metal.rb:253:in `dispatch'
+actionpack (5.1.3) lib/action_dispatch/routing/route_set.rb:49:in `dispatch'
+actionpack (5.1.3) lib/action_dispatch/routing/route_set.rb:31:in `serve'
+actionpack (5.1.3) lib/action_dispatch/journey/router.rb:46:in `block in serve'
+actionpack (5.1.3) lib/action_dispatch/journey/router.rb:33:in `each'
+actionpack (5.1.3) lib/action_dispatch/journey/router.rb:33:in `serve'
+actionpack (5.1.3) lib/action_dispatch/routing/route_set.rb:834:in `call'
+rack (2.0.3) lib/rack/etag.rb:25:in `call'
+rack (2.0.3) lib/rack/conditional_get.rb:25:in `call'
+rack (2.0.3) lib/rack/head.rb:12:in `call'
+rack (2.0.3) lib/rack/session/abstract/id.rb:232:in `context'
+rack (2.0.3) lib/rack/session/abstract/id.rb:226:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/cookies.rb:613:in `call'
+activerecord (5.1.3) lib/active_record/migration.rb:556:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/callbacks.rb:26:in `block in call'
+activesupport (5.1.3) lib/active_support/callbacks.rb:97:in `run_callbacks'
+actionpack (5.1.3) lib/action_dispatch/middleware/callbacks.rb:24:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/debug_exceptions.rb:59:in `call'
+web-console (3.5.1) lib/web_console/middleware.rb:135:in `call_app'
+web-console (3.5.1) lib/web_console/middleware.rb:28:in `block in call'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `catch'
+web-console (3.5.1) lib/web_console/middleware.rb:18:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/show_exceptions.rb:31:in `call'
+railties (5.1.3) lib/rails/rack/logger.rb:36:in `call_app'
+railties (5.1.3) lib/rails/rack/logger.rb:24:in `block in call'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:69:in `block in tagged'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:26:in `tagged'
+activesupport (5.1.3) lib/active_support/tagged_logging.rb:69:in `tagged'
+railties (5.1.3) lib/rails/rack/logger.rb:24:in `call'
+sprockets-rails (3.2.0) lib/sprockets/rails/quiet_assets.rb:13:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/remote_ip.rb:79:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/request_id.rb:25:in `call'
+rack (2.0.3) lib/rack/method_override.rb:22:in `call'
+rack (2.0.3) lib/rack/runtime.rb:22:in `call'
+activesupport (5.1.3) lib/active_support/cache/strategy/local_cache_middleware.rb:27:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/executor.rb:12:in `call'
+actionpack (5.1.3) lib/action_dispatch/middleware/static.rb:125:in `call'
+rack (2.0.3) lib/rack/sendfile.rb:111:in `call'
+railties (5.1.3) lib/rails/engine.rb:522:in `call'
+puma (3.10.0) lib/puma/configuration.rb:225:in `call'
+puma (3.10.0) lib/puma/server.rb:605:in `handle_request'
+puma (3.10.0) lib/puma/server.rb:437:in `process_client'
+puma (3.10.0) lib/puma/server.rb:301:in `block in run'
+puma (3.10.0) lib/puma/thread_pool.rb:120:in `block in spawn_thread'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 16:32:01 -0400
+Processing by DrinksController#index as HTML
+  Rendering drinks/index.html.erb within layouts/application
+  Rendered drinks/index.html.erb within layouts/application (0.3ms)
+Completed 200 OK in 21ms (Views: 19.2ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/drinks/new" for 127.0.0.1 at 2017-08-20 16:46:42 -0400
   [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
 Processing by DrinksController#new as HTML
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 0.0ms)
+
+
+  
+NoMethodError (undefined method `new' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:12:in `new'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 16:49:54 -0400
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 3ms
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:5:in `index'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 16:51:27 -0400
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 3ms
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:6:in `index'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 16:51:29 -0400
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 1ms
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:6:in `index'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 16:54:11 -0400
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 3ms
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:6:in `index'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 16:54:14 -0400
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 1ms
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:6:in `index'
+Started GET "/drinks/new" for 127.0.0.1 at 2017-08-20 17:17:28 -0400
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by DrinksController#new as HTML
+Completed 500 Internal Server Error in 10ms (ActiveRecord: 0.0ms)
+
+
+  
+NoMethodError (undefined method `new' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:13:in `new'
+Started GET "/drinks/new" for 127.0.0.1 at 2017-08-20 17:18:18 -0400
+Processing by DrinksController#new as HTML
+Started GET "/drinks/new" for 127.0.0.1 at 2017-08-20 17:20:52 -0400
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by DrinksController#new as HTML
+Completed 500 Internal Server Error in 9ms (ActiveRecord: 0.0ms)
+
+
+  
+NoMethodError (undefined method `new' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:13:in `new'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 17:21:37 -0400
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 2ms (ActiveRecord: 0.0ms)
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:6:in `index'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 17:25:13 -0400
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 3ms
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:6:in `index'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 17:32:04 -0400
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 3ms
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:6:in `index'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 17:32:06 -0400
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 1ms
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:6:in `index'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 17:32:24 -0400
+  [1m[35m (0.1ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 9ms (ActiveRecord: 0.0ms)
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:6:in `index'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 17:38:38 -0400
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 3ms
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:6:in `index'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 17:39:04 -0400
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 3ms
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:6:in `index'
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 17:39:07 -0400
+Processing by DrinksController#index as HTML
+Completed 500 Internal Server Error in 2ms
+
+
+  
+NoMethodError (undefined method `all' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:6:in `index'
+Started GET "/drinks/index" for 127.0.0.1 at 2017-08-20 17:39:18 -0400
+Processing by DrinksController#show as HTML
+  Parameters: {"id"=>"index"}
+Completed 500 Internal Server Error in 2ms
+
+
+  
+NoMethodError (undefined method `find' for Drink:Module):
+  
+app/controllers/drinks_controller.rb:30:in `find_drinks'
+Started GET "/drinks/index" for 127.0.0.1 at 2017-08-20 17:44:25 -0400
+  [1m[35m (0.2ms)[0m  [1m[34mSELECT "schema_migrations"."version" FROM "schema_migrations" ORDER BY "schema_migrations"."version" ASC[0m
+Processing by DrinksController#show as HTML
+  Parameters: {"id"=>"index"}
+  [1m[36mDrink Load (0.2ms)[0m  [1m[34mSELECT  "drinks".* FROM "drinks" WHERE "drinks"."id" = ? LIMIT ?[0m  [["id", 0], ["LIMIT", 1]]
+Completed 404 Not Found in 15ms (ActiveRecord: 0.7ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Drink with 'id'=index):
+  
+app/controllers/drinks_controller.rb:30:in `find_drinks'
+Started GET "/drinks/index" for 127.0.0.1 at 2017-08-20 17:44:27 -0400
+Processing by DrinksController#show as HTML
+  Parameters: {"id"=>"index"}
+  [1m[36mDrink Load (0.1ms)[0m  [1m[34mSELECT  "drinks".* FROM "drinks" WHERE "drinks"."id" = ? LIMIT ?[0m  [["id", 0], ["LIMIT", 1]]
+Completed 404 Not Found in 2ms (ActiveRecord: 0.3ms)
+
+
+  
+ActiveRecord::RecordNotFound (Couldn't find Drink with 'id'=index):
+  
+app/controllers/drinks_controller.rb:30:in `find_drinks'
+Started GET "/drinks/new" for 127.0.0.1 at 2017-08-20 17:44:34 -0400
+Processing by DrinksController#new as HTML
   Rendering drinks/new.html.erb within layouts/application
-  Rendered drinks/new.html.erb within layouts/application (13.3ms)
-Completed 200 OK in 229ms (Views: 200.6ms | ActiveRecord: 0.9ms)
+  Rendered drinks/new.html.erb within layouts/application (0.8ms)
+Completed 500 Internal Server Error in 11ms (ActiveRecord: 0.2ms)
+
+
+  
+SyntaxError (/Users/dean/Development/code/web-062617/app/views/drinks/new.html.erb:13: syntax error, unexpected keyword_ensure, expecting keyword_end
+/Users/dean/Development/code/web-062617/app/views/drinks/new.html.erb:15: syntax error, unexpected end-of-input, expecting keyword_end):
+  
+app/views/drinks/new.html.erb:13: syntax error, unexpected keyword_ensure, expecting keyword_end
+app/views/drinks/new.html.erb:15: syntax error, unexpected end-of-input, expecting keyword_end
+Started GET "/drinks/new" for 127.0.0.1 at 2017-08-20 17:44:56 -0400
+Processing by DrinksController#new as HTML
+  Rendering drinks/new.html.erb within layouts/application
+  Rendered drinks/new.html.erb within layouts/application (163.6ms)
+Completed 500 Internal Server Error in 169ms (ActiveRecord: 0.0ms)
+
+
+  
+ActionView::Template::Error (undefined local variable or method `form' for #<#<Class:0x007ff0a4b05cd8>:0x007ff0a53090d8>
+Did you mean?  format
+               formats
+               formats=
+               form_for
+               form_tag
+               form_with
+               fork):
+    1: <h1>New Drink</h1> 
+    2: <%= form_for @drink do |f| %>
+    3:   <div class="field">
+    4:     <%= form.label :name %>
+    5:     <%= form.text_field :name%>
+    6:   </div>
+    7: 
+  
+app/views/drinks/new.html.erb:4:in `block in _app_views_drinks_new_html_erb___1763265026476658957_70335770152800'
+app/views/drinks/new.html.erb:2:in `_app_views_drinks_new_html_erb___1763265026476658957_70335770152800'
+Started GET "/drinks/new" for 127.0.0.1 at 2017-08-20 17:45:10 -0400
+Processing by DrinksController#new as HTML
+  Rendering drinks/new.html.erb within layouts/application
+  Rendered drinks/new.html.erb within layouts/application (9.6ms)
+Completed 200 OK in 166ms (Views: 164.4ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 17:45:23 -0400
+Processing by DrinksController#index as HTML
+  Rendering drinks/index.html.erb within layouts/application
+  [1m[36mDrink Load (0.2ms)[0m  [1m[34mSELECT "drinks".* FROM "drinks"[0m
+  Rendered drinks/index.html.erb within layouts/application (1.4ms)
+Completed 200 OK in 19ms (Views: 17.0ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/drinks/new" for 127.0.0.1 at 2017-08-20 17:45:36 -0400
+Processing by DrinksController#new as HTML
+  Rendering drinks/new.html.erb within layouts/application
+  Rendered drinks/new.html.erb within layouts/application (1.3ms)
+Completed 200 OK in 19ms (Views: 17.7ms | ActiveRecord: 0.0ms)
+
+
+Started GET "/drinks/new" for 127.0.0.1 at 2017-08-20 17:46:32 -0400
+Processing by DrinksController#new as HTML
+  Rendering drinks/new.html.erb within layouts/application
+  Rendered drinks/new.html.erb within layouts/application (1.6ms)
+Completed 200 OK in 20ms (Views: 18.9ms | ActiveRecord: 0.0ms)
+
+
+Started POST "/drinks" for 127.0.0.1 at 2017-08-20 17:46:38 -0400
+Processing by DrinksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"9lw7CdAK2MYlIOmlaRpbs4uGu4PZUzLk6Q5NTcQAXGKD/ifVKOv8qk2muqM0FnjdLOxy2vffEaLabeUZLHy++w==", "drink"=>{"name"=>"manhattan", "price"=>"12"}, "commit"=>"Create Drink"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  Rendering drinks/new.html.erb within layouts/application
+  Rendered drinks/new.html.erb within layouts/application (1.7ms)
+Completed 200 OK in 49ms (Views: 39.2ms | ActiveRecord: 0.1ms)
+
+
+Started GET "/drinks" for 127.0.0.1 at 2017-08-20 17:46:42 -0400
+Processing by DrinksController#index as HTML
+  Rendering drinks/index.html.erb within layouts/application
+  [1m[36mDrink Load (0.2ms)[0m  [1m[34mSELECT "drinks".* FROM "drinks"[0m
+  Rendered drinks/index.html.erb within layouts/application (1.4ms)
+Completed 200 OK in 26ms (Views: 24.4ms | ActiveRecord: 0.2ms)
+
+
+Started GET "/drinks/new" for 127.0.0.1 at 2017-08-20 17:47:07 -0400
+Processing by DrinksController#new as HTML
+  Rendering drinks/new.html.erb within layouts/application
+  Rendered drinks/new.html.erb within layouts/application (2.3ms)
+Completed 200 OK in 35ms (Views: 23.6ms | ActiveRecord: 0.8ms)
+
+
+Started POST "/drinks" for 127.0.0.1 at 2017-08-20 17:47:30 -0400
+Processing by DrinksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"A+5INLpSl1N2H2NLTD+4TtQRc3V/M+zkVHOwypL9DIZ2TFToQrOzPx6ZME0RM5sgc3u6LFG/z6JnEBieeoHuHw==", "drink"=>{"name"=>"voux carre", "price"=>"18"}, "commit"=>"Create Drink"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.0ms)[0m  [1m[31mrollback transaction[0m
+  Rendering drinks/new.html.erb within layouts/application
+  Rendered drinks/new.html.erb within layouts/application (2.5ms)
+Completed 200 OK in 43ms (Views: 33.3ms | ActiveRecord: 0.1ms)
+
+
+Started POST "/drinks" for 127.0.0.1 at 2017-08-20 17:48:31 -0400
+Processing by DrinksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"6cMcEAgMC0r/xgsuX0K9LjzyhVO8/rcWnhLqbofzdAacYQDM8O0vJpdAWCgCTp5Am5hMCpJylFCtcUI6b4+Wnw==", "drink"=>{"name"=>"voux carre", "price"=>"18"}, "commit"=>"Create Drink"}
+  [1m[35m (0.1ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  Rendering drinks/new.html.erb within layouts/application
+  Rendered drinks/new.html.erb within layouts/application (2.3ms)
+Completed 200 OK in 47ms (Views: 28.1ms | ActiveRecord: 1.1ms)
+
+
+Started POST "/drinks" for 127.0.0.1 at 2017-08-20 17:52:19 -0400
+Processing by DrinksController#create as HTML
+  Parameters: {"utf8"=>"✓", "authenticity_token"=>"yJJV/A4V2+xRZagjw/+2wa7Nd7c04xlGguF//w+63Nu9MEkg9vT/gDnj+yWe85WvCae+7hpvOgCxgter58Y+Qg==", "drink"=>{"name"=>"voux carre", "price"=>"18"}, "commit"=>"Create Drink"}
+  [1m[35m (0.0ms)[0m  [1m[36mbegin transaction[0m
+  [1m[35m (0.1ms)[0m  [1m[31mrollback transaction[0m
+  Rendering drinks/new.html.erb within layouts/application
+  Rendered drinks/new.html.erb within layouts/application (2.0ms)
+Completed 200 OK in 45ms (Views: 28.7ms | ActiveRecord: 0.9ms)
 
 

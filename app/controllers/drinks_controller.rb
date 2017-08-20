@@ -1,41 +1,37 @@
 class DrinksController < ApplicationController
 
+  before_action :find_drinks, only: [:show]
+
   def index
-    @drinks = Drink.all
+  	@drinks = Drink.all
   end
 
   def show
-    @drink = Drink.find(params[:id])
   end
 
   def new
-    @drink = Drink.new
-  end
-
-  def edit
-    @drink = Drink.find(params[:id])
+  	@drink = Drink.new
   end
 
   def create
-    @drink = Drink.create(drink_params)
-    redirect_to drinks_path
+  	@drink = Drink.new(drink_params)
+
+  	if @drink.save
+  		redirect_to drinks_path
+  	else
+  		render :new
+  	end
+
   end
-
-
-  def update
-    @drink = Drink.find(params[:id])
-    @drink.update(drink_params)
-    redirect_to drink_path(@drink) #/drinks/1
-  end
-
-  def destroy
-  end
-
 
   private
-    def drinks_params
-      params.require(:drinks).permit(:name, :price)
-    end
+  	
+  	def find_drinks
+  		@drink = Drink.find(params[:id])
+  	end
 
+  	def drink_params
+  		params.require(:drink).permit(:name, :price, :drink_category_id)
+  	end
 
 end
