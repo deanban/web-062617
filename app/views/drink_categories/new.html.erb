@@ -1,6 +1,2 @@
 <h1>New Drink Category</h1>
-<%= form_for @drink_category do |f| %>
-	<%= f.label :name %>
-	<%= f.text_field :name %>
-	<%= f.submit %>
-<% end %>
+<%= render :partial => "form" %>

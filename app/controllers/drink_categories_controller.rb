@@ -1,4 +1,7 @@
 class DrinkCategoriesController < ApplicationController
+  
+  before_action :find_category, only: [:create, :edit, :update, :destroy]
+  
   def index
     @drink_categories = DrinkCategory.all 
   end
@@ -24,10 +27,16 @@ class DrinkCategoriesController < ApplicationController
 
   def update
     @drink_category.update(category_params)
-    redirect_to drink_categories_path
+    if @drink_category.save
+      redirect_to drink_categories_path
+    else 
+      render :edit
+    end
   end
 
   def destroy
+    @drink_category.destroy
+    redirect_to drink_categories_path, notice: "Delete success"
   end
 
   private

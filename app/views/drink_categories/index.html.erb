@@ -1,4 +1,7 @@
 <h1>Drink Category</h1>
 <%= @drink_categories.each do |c| %>
-	<li><%=c.name%></li>
+	<li><%= link_to("#{c.name}", edit_drink_category_path(c)) %></li>
+	<%= link_to 'Delete', drink_category_path(article), 
+                             method: :delete, 
+                             data: { confirm: 'Are you sure?' } %>
 <% end %>
